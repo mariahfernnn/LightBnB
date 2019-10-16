@@ -42,13 +42,13 @@ CREATE TABLE reservations (
   guest_id INTEGER REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE TABLE rates (
-  id SERIAL PRIMARY KEY NOT NULL,
-  start_date DATE,
-  end_date DATE,
-  cost_per_night INTEGER,
-  property_id INTEGER REFERENCES properties(id) ON DELETE CASCADE
-);
+-- CREATE TABLE rates (
+--   id SERIAL PRIMARY KEY NOT NULL,
+--   start_date DATE,
+--   end_date DATE,
+--   cost_per_night INTEGER,
+--   property_id INTEGER REFERENCES properties(id) ON DELETE CASCADE
+-- );
 
 CREATE TABLE property_reviews (
   id SERIAL PRIMARY KEY NOT NULL,
