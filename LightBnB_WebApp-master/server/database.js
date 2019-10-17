@@ -57,11 +57,25 @@ exports.getUserWithId = getUserWithId;
  * @param {{name: string, password: string, email: string}} user
  * @return {Promise<{}>} A promise to the user.
  */
+
+// Use node-postgres to have the addUser query the lightbnb database
+// Accepts a user object that will have a name, email, and hashed password property
+// This function should insert the new user into the database
+// It will return a promise that resolves with the new user object - should contain the user's id after its been added to the database
 const addUser =  function(user) {
-  const userId = Object.keys(users).length + 1;
-  user.id = userId;
-  users[userId] = user;
-  return Promise.resolve(user);
+  const queryString = `
+  INSERT INTO users (
+    name, email, password) 
+    VALUES (
+    $1, $2, $3)
+    RETURNING *;
+  `;
+  // Store values in an array
+  const values = [user.name, user.email, user.password];
+
+  return pool.query(queryString, values)
+  .then(user => user.rows[0])
+  .catch(err => console.error(err));
 }
 exports.addUser = addUser;
 
