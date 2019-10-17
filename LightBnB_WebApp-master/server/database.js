@@ -20,7 +20,10 @@ const pool = new Pool({
  * @return {Promise<{}>} A promise to the user.
  */
 
- // Assisted by Miguel Cruz
+// Use node-postgres to have the getUserWithEmail query the lightbnb database
+// Accepts an email address and return a promise 
+// Should resolve with the user that has that email address or null if that user does not exist
+// Assisted by Miguel Cruz
 const getUserWithEmail = function(email) {
   return pool.query(`
   SELECT *
