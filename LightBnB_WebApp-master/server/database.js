@@ -19,17 +19,15 @@ const pool = new Pool({
  * @param {String} email The email of the user.
  * @return {Promise<{}>} A promise to the user.
  */
+
+ // Assisted by Miguel Cruz
 const getUserWithEmail = function(email) {
-  let user;
-  for (const userId in users) {
-    user = users[userId];
-    if (user.email.toLowerCase() === email.toLowerCase()) {
-      break;
-    } else {
-      user = null;
-    }
-  }
-  return Promise.resolve(user);
+  return pool.query(`
+  SELECT *
+  FROM users
+  WHERE email = $1`, [email])
+  .then(user => user.rows[0])
+  .catch(err => console.error(err));
 }
 exports.getUserWithEmail = getUserWithEmail;
 
