@@ -39,11 +39,18 @@ exports.getUserWithEmail = getUserWithEmail;
  * @param {string} id The id of the user.
  * @return {Promise<{}>} A promise to the user.
  */
+
+// Use node-postgres to have the getUserWithId query the lightbnb database
+// Will do the same as getUserWithEmail but using the user's id instead of email
 const getUserWithId = function(id) {
-  return Promise.resolve(users[id]);
+  return pool.query(`
+  SELECT *
+  FROM users
+  WHERE id = $1`, [id])
+  .then(user => user.rows[0])
+  .catch(err => console.error(err));
 }
 exports.getUserWithId = getUserWithId;
-
 
 /**
  * Add a new user to the database.
