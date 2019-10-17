@@ -86,8 +86,29 @@ exports.addUser = addUser;
  * @param {string} guest_id The id of the user.
  * @return {Promise<[{}]>} A promise to the reservations.
  */
+
+// Use node-postgres to have the getAllReservations query the lightbnb database
+// This function accepts a guest_id, limits the properties to 10 and returns a promise
 const getAllReservations = function(guest_id, limit = 10) {
-  return getAllProperties(null, 2);
+  const queryString = `
+  SELECT p.*, r.*, avg(property_reviews.rating) AS average_rating
+  FROM reservations r
+  JOIN properties p
+  ON r.property_id = p.id
+  JOIN property_reviews ON p.id = property_reviews.property_id 
+  WHERE r.guest_id = $1
+  AND r.end_date < now()::date
+  GROUP BY p.title, p.id, r.start_date, r.id
+  ORDER BY r.start_date 
+  LIMIT $2;
+  `;
+  // Store values in an array
+  const values = [guest_id, limit];
+
+  return pool.query(queryString, values)
+  .then(res => res.rows)
+  .catch(err => console.error(err));
+  // return getAllProperties(null, 2);
 }
 exports.getAllReservations = getAllReservations;
 
