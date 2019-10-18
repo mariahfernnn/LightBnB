@@ -178,13 +178,6 @@ const getAllProperties = function(options, limit = 10) {
   // 6
   return pool.query(queryString, queryParams)
   .then(res => res.rows);
-
-  // return pool.query(`
-  // SELECT * 
-  // FROM properties
-  // LIMIT $1
-  // `, [limit])
-  // .then(res => res.rows);
 }
 exports.getAllProperties = getAllProperties;
 
@@ -194,7 +187,7 @@ exports.getAllProperties = getAllProperties;
  * @return {Promise<{}>} A promise to the property.
  */
 
- //
+ // Update addProperty function to save a new property to the properties table
  // Assisted by Andrew Matte - make sure parameters you are passing in the INSERT TO statements are exactly the same as the values
  // Assisted by Will Hawkins - make sure you are adding new listings into the database - added owner_id
 const addProperty = function(property) {
@@ -237,10 +230,5 @@ const addProperty = function(property) {
     return pool.query(queryString, values)
   .then(property => property.rows[0])
   .catch(err => console.error(err));
-
-  // const propertyId = Object.keys(properties).length + 1;
-  // property.id = propertyId;
-  // properties[propertyId] = property;
-  // return Promise.resolve(property);
 }
 exports.addProperty = addProperty;
